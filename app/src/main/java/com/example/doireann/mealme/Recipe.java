@@ -16,53 +16,44 @@ import java.util.List;
  */
 
 public class Recipe {
-    final String TAG = "DEMO";
+    private String id;
+    private String title;
+    private String imageUrl;
+    private String instructions;
+    private List<Ingredient> ingredients;
 
-    class Ingredient {
-        Ingredient(){}
-
-        String name;
-        boolean include;
-        String image;
+    public class Ingredient {
+        private String originalString;
     }
 
-    class Dish {
-        Dish(){}
-
-        String name;
-        String image;
+    public Recipe() {
+        ingredients = new ArrayList<Ingredient>();
     }
 
-    //----------- Public variables -----------
-    public List<Ingredient> ingredients;
-    public Dish dish;
-    //----------------------------------------
-
-
-
-
-
-    private static String getStringFromInputStream(InputStream is) {
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return sb.toString();
+    public String getId() {
+        return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
+
+
