@@ -12,9 +12,9 @@ import java.net.URL;
  * Created by Doireann on 2018-04-04.
  */
 
-public class GetImage extends AsyncTask<String, Void, Bitmap> {
+public class ImageFetch extends AsyncTask<String, Void, Bitmap> {
 
-    public GetImage(Listener listener) {
+    public ImageFetch(Listener listener) {
         this.listener = listener;
     }
 
