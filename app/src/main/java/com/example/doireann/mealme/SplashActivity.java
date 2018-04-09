@@ -9,28 +9,23 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.doireann.mealme.BuildConfig;
-
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "mealme";
     private final String VERSION = BuildConfig.VERSION_NAME;
-
     ImageView image;
-    TextView text;
-
-
+    TextView splashText;
+    TextView versionText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
         //text animation
-        text = findViewById(R.id.id_splash_txt);
+        splashText = findViewById(R.id.id_splash_txt);
         Animation textAnim = AnimationUtils.loadAnimation(this, R.anim.splash_txt_anim);
-        text.startAnimation(textAnim);
+        splashText.startAnimation(textAnim);
 
         // image animation
         image = findViewById(R.id.id_splash_img);
@@ -44,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 image.setVisibility(View.GONE);
-                text.setVisibility(View.GONE);
+                splashText.setVisibility(View.GONE);
                 startActivity(new Intent(SplashActivity.this, MenuActivity.class));
                 SplashActivity.this.finish();
             }
@@ -54,17 +49,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-//        SharedPreferences prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//
-//        Log.d(TAG, prefs.getString("lastlaunch", "First Run"));
-//        String currentTime = Calendar.getInstance().getTime().toString();
-//        editor.putString("lastlaunch", currentTime);
-//        editor.commit();
+        // version text
+        versionText = findViewById(R.id.id_splash_version_txt);
+        versionText.setText("Version " + VERSION);
     }
 }

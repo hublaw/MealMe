@@ -20,14 +20,18 @@ public class Recipe {
     private String title;
     private String imageUrl;
     private String instructions;
-    private List<Ingredient> ingredients;
+    private Recipes.Ingredients ingredients;
 
     public class Ingredient {
         private String originalString;
-    }
 
-    public Recipe() {
-        ingredients = new ArrayList<Ingredient>();
+        public String getOriginalString() {
+            return originalString;
+        }
+
+        public void setOriginalString(String originalString) {
+            this.originalString = originalString;
+        }
     }
 
     public String getId() {
@@ -42,9 +46,16 @@ public class Recipe {
         return imageUrl;
     }
 
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public Recipes.Ingredients getIngredients() {
+        return ingredients;
+    }
+
     public void setId(String id) {
         this.id = id;
-
     }
 
     public void setTitle(String title) {
@@ -53,6 +64,14 @@ public class Recipe {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public void setIngredients(Recipes.Ingredients ingredients) {
+        this.ingredients = ingredients;
     }
 }
 

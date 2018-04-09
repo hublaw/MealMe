@@ -15,11 +15,11 @@
         android:pivotY="50%"
         android:fillAfter="false"
         android:startOffset="2800"
-        android:duration="500" />
+        android:duration="1200" />
 
     <alpha
-        android:startOffset="3700"
+        android:startOffset="4000"
         android:fromAlpha="1.0"
         android:toAlpha="0.0"
-        android:duration="300" />
+        android:duration="500" />
 </set>

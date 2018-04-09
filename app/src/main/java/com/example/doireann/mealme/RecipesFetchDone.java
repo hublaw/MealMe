@@ -7,5 +7,5 @@ import java.util.List;
  */
 
 public interface RecipeFetchDone {
-    void onRecipeFetchDone(List<Recipe> recipe_list);
+    void onRecipeFetchDone(Recipes recipe_list);
 }

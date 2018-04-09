@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:context="com.example.doireann.mealme.MenuActivity"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="@color/list2">
 
     <TextView
         android:layout_width="match_parent"
