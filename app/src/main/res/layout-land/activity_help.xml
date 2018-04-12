@@ -4,29 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/suggestList"
     android:orientation="horizontal"
-    tools:context="com.example.doireann.mealme.HelpActivity"
-    android:background="@color/suggestList">
+    tools:context="com.example.doireann.mealme.HelpActivity">
 
-    <TextView
-        android:id="@+id/id_help_suggest"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:textSize="18dp"
         android:layout_margin="@dimen/app_margin"
-        android:text="@string/helpSuggest"
-        android:background="@color/suggestListDark"/>
+        android:layout_weight="1"
+        android:paddingTop="30dp"
+        android:paddingStart="@dimen/app_margin"
+        android:paddingEnd="@dimen/app_margin"
+        android:background="@color/suggestListDark"
+        android:orientation="vertical"
+        tools:context="com.example.doireann.mealme.HelpActivity">
 
-    <TextView
-        android:id="@+id/id_help_search"
+        <TextView
+            android:id="@+id/id_help_suggest1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSuggest1"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_suggest2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSuggest2"
+            android:textStyle="bold"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_suggest3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSuggest3"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_suggest4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/help4"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_suggest5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/help5"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:layout_margin="@dimen/app_margin"
-        android:textSize="18dp"
-        android:text="@string/helpSearch"
-        android:background="@color/searchListDark"/>
+        android:layout_weight="1"
+        android:paddingTop="30dp"
+        android:paddingStart="@dimen/app_margin"
+        android:paddingEnd="@dimen/app_margin"
+        android:background="@color/searchListDark"
+        android:orientation="vertical"
+        tools:context="com.example.doireann.mealme.HelpActivity">
+
+        <TextView
+            android:id="@+id/id_help_search1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSearch1"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_search2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSearch2"
+            android:textStyle="bold"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_search3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/helpSearch3"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_search4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/help4"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/id_help_search5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/help5"
+            android:textSize="18dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
+
 
