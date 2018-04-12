@@ -131,7 +131,7 @@
                 android:id="@+id/id_search_menu_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/searchListBtn"
+                android:background="@color/searchBtn"
                 android:text="@string/search"
                 android:textColor="@color/searchListDark"
                 app:layout_constraintBottom_toBottomOf="parent"

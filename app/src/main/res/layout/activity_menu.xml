@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:text="@string/search"
             android:textColor="@color/searchListDark"
-            android:background="@color/searchListBtn"
+            android:background="@color/searchBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

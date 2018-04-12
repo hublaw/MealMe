@@ -1,6 +1,8 @@
 package com.example.doireann.mealme;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
     private int counter = 0;
     LinearLayout ll;
     private String tags;
+    ProgressBar pb;
 
 
     private void sendFetchRecipeList(Boolean search_, String tags_, int offset) {
@@ -55,20 +59,21 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
         ll = findViewById(R.id.id_recipe_ll);
         fetchMore = findViewById(R.id.id_fetch_btn);
         triviaTxt = findViewById(R.id.id_trivia_txt);
+        pb = findViewById(R.id.id_pb);
+
         if (search) {
             ll.setBackgroundColor(getResources().getColor(R.color.searchList));
             fetchMore.setBackgroundColor(getResources().getColor(R.color.searchList));
-            fetchMore.setTextColor(getResources().getColor(R.color.searchListBtn));
+            fetchMore.setTextColor(getResources().getColor(R.color.searchBtn));
             triviaTxt.setBackgroundColor(getResources().getColor(R.color.searchListDark));
+            pb.getIndeterminateDrawable().setTint(getResources().getColor(R.color.searchBtn));
         }
 
-        // set up trivia layout
+        // set trivia visibility and layout
         String triviaStr = b.getString("trivia");
-        triviaTxt.setText("Did you know?\n" + triviaStr);
-
-        // set trivia visibility
         int delay = 3000;
         if (triviaStr != null) {
+            triviaTxt.setText("Did you know?\n" + triviaStr);
             delay = calcDelay(triviaStr.length());
         }
         cl = findViewById(R.id.id_trivia_layout);
@@ -99,11 +104,13 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
         });
 
         // fetch more button listener
+
         fetchMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 counter++;
                 sendFetchRecipeList(search, tags, counter);
+                pb.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -132,20 +139,20 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
 
     @Override
     public void onRecipeFetchDone(Recipes recipe_list) {
-        adapter.setRecipes(recipe_list);
-        adapter.notifyDataSetChanged();
+        SharedPreferences prefs = getSharedPreferences("app_state", Context.MODE_PRIVATE);
+        String status = prefs.getString("status", "DEFAULT");
+        pb.setVisibility(View.GONE);
+
+        if (status.equals("No Exception")) {
+            adapter.setRecipes(recipe_list);
+            adapter.notifyDataSetChanged();
+        }  else {
+            Toast.makeText(this, status, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public Context getRecipesContext() {
+        return RecipesActivity.this;
     }
 }
-
-// How to access errors from RecipesFetchAsync?
-//    @Override
-//    public void onGetCompletion() {
-//        prefs = getSharedPreferences("app_state", Context.MODE_PRIVATE);
-//        String status = prefs.getString("status", "DEFAULT");
-//
-//        if (status.equals("ACHIEVED")) {
-//
-//        }  else {
-//            Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
-//        }
-//    }

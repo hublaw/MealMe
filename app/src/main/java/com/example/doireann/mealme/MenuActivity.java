@@ -2,6 +2,7 @@ package com.example.doireann.mealme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -98,6 +99,11 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
         bSuggest.putString("trivia", t);
     }
 
+    @Override
+    public Context getTriviaContext() {
+        return MenuActivity.this;
+    }
+
     private class TriviaFetch extends AsyncTask<String, String, String> {
         private TriviaFetchDone context;
 
@@ -114,6 +120,10 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
 
         @Override
         protected String doInBackground(String... strings) {
+            SharedPreferences prefs = context.getTriviaContext().getSharedPreferences("app_state", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("status", "No Exception");
+            editor.apply();
             try {
                 String triviaUrl = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/trivia/random";
                 HttpURLConnection conn = util.createConnection(triviaUrl);
@@ -130,10 +140,16 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
 
             } catch (IOException ioe) {
                 Log.e(TAG, "Exception establishing connection", ioe);
+                editor.putString("status", "Exception establishing connection. Please try again");
+                editor.apply();
             } catch (JSONException je) {
                 Log.e(TAG, "Exception parsing trivia with id ", je);
+                editor.putString("status", "Exception fetching recipes. Please try again");
+                editor.apply();
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
+                editor.putString("status", e.getMessage());
+                editor.apply();
             }
             return trivia;
         }

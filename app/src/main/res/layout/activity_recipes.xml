@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/id_recipe_ll"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_recipe_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/suggestList"
@@ -15,7 +15,19 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+    <ProgressBar
+        android:id="@+id/id_pb"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/suggestBtn"
+        />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/id_trivia_layout"
@@ -63,12 +75,12 @@
             android:id="@+id/id_fetch_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/more_btn"
-            android:textAlignment="textEnd"
-            android:textSize="18dp"
             android:layout_marginEnd="30dp"
             android:background="@color/suggestList"
+            android:text="@string/more_btn"
+            android:textAlignment="textEnd"
             android:textColor="@color/suggestBtn"
+            android:textSize="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

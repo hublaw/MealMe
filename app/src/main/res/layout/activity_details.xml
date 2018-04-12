@@ -8,6 +8,7 @@
     android:background="@color/suggestList"
     tools:context="com.example.doireann.mealme.DetailsActivity">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
@@ -29,6 +30,15 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="22dp" />
 
+    <ProgressBar
+        android:id="@+id/id_pb_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_details_title_txt"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/suggestBtn"
+        android:layout_gravity="center" />
+
     <ImageView
         android:id="@+id/id_details_img"
         android:layout_width="match_parent"
@@ -48,6 +58,15 @@
         android:layout_marginStart="@dimen/app_margin"
         android:layout_marginTop="20dp"
         android:divider="@color/suggestListDark" />
+
+    <ProgressBar
+        android:id="@+id/id_pb_ing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_details_ingredients_list"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/suggestBtn"
+        android:layout_gravity="center" />
 
     <ScrollView
         android:id="@+id/id_details_sv"

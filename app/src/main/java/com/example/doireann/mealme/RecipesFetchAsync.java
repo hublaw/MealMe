@@ -27,7 +27,6 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
     private String tags, id, title, imageUrl = null;
     private int counter;
     private RecipesFetchDone context;
-    private HttpURLConnection connection;
     private Recipes recipes;
     private Utility util = new Utility();
 
@@ -85,6 +84,10 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
 
     @Override
     protected Recipes doInBackground(String... strings) {
+        SharedPreferences prefs = context.getRecipesContext().getSharedPreferences("app_state", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("status", "No Exception");
+        editor.apply();
         try {
             String urlString = createUrlString(search, tags);
             HttpURLConnection conn = util.createConnection(urlString);
@@ -101,10 +104,16 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
 
         } catch (IOException ioe) {
             Log.e(TAG, "Exception establishing connection", ioe);
+            editor.putString("status", "Exception establishing connection. Please try again");
+            editor.apply();
         } catch (JSONException je) {
             Log.e(TAG, "Exception parsing recipe with id " + id, je);
+            editor.putString("status", "Exception fetching recipes. Please try again");
+            editor.apply();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+            editor.putString("status", e.getMessage());
+            editor.apply();
         }
         return recipes;
     }
@@ -114,11 +123,3 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
         context.onRecipeFetchDone(recipes);
     }
 }
-
-//        SharedPreferences prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//
-//        Log.d(TAG, prefs.getString("lastlaunch", "First Run"));
-//        String currentTime = Calendar.getInstance().getTime().toString();
-//        editor.putString("lastlaunch", currentTime);
-//        editor.commit();

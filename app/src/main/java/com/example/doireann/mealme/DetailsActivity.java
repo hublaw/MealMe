@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -11,9 +12,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.json.JSONArray;
@@ -36,6 +39,7 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
     private String recipe_id;
     private Recipe recipe;
     private Utility util = new Utility();
+    ProgressBar pb_img, pb_ing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,12 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
         Boolean search = b.getBoolean("search", false);
         ll = findViewById(R.id.id_details_ll);
         rl = findViewById(R.id.id_details_rl);
+        pb_img = findViewById(R.id.id_pb_img);
+        pb_ing = findViewById(R.id.id_pb_ing);
         Log.d( TAG, String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
         if (search) {
+            pb_img.getIndeterminateDrawable().setTint(getResources().getColor(R.color.searchBtn));
+            pb_ing.getIndeterminateDrawable().setTint(getResources().getColor(R.color.searchBtn));
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 ll.setBackgroundColor(getResources().getColor(R.color.searchList));
             } else {
@@ -87,17 +95,24 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
     @Override
     public void onImageLoaded(Bitmap bitmap) {
         img.setImageBitmap(bitmap);
+        pb_img.setVisibility(View.GONE);
     }
 
     @Override
     public void onDetailsFetchDone(Recipe recipe) {
         adapter.setIngredients(recipe);
         adapter.notifyDataSetChanged();
+        pb_ing.setVisibility(View.GONE);
         Log.d(TAG, recipe.getId());
 
         // manipulate instructions string to add a space after list items
         String spacedInstructs = recipe.getInstructions().replaceAll("\\.<", "\\. <");
         instructions.setText(Html.fromHtml(spacedInstructs));
+    }
+
+    @Override
+    public Context getTriviaContext() {
+        return DetailsActivity.this;
     }
 
     private class RecipeFetch extends AsyncTask<String, String, Recipe> {
@@ -135,6 +150,10 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
 
         @Override
         protected Recipe doInBackground(String... strings) {
+            SharedPreferences prefs = context.getTriviaContext().getSharedPreferences("app_state", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("status", "No Exception");
+            editor.apply();
             try {
                 String base_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
                 String id = (b.getString("recipe_id"));
@@ -151,10 +170,16 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
                 parseRecipeIS(dataInputStream);
             } catch (IOException ioe) {
                 Log.e(TAG, "Exception establishing connection", ioe);
+                editor.putString("status", "Exception establishing connection. Please try again");
+                editor.apply();
             } catch (JSONException je) {
                 Log.e(TAG, "Exception parsing recipe details", je);
+                editor.putString("status", "Exception fetching recipes. Please try again");
+                editor.apply();
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
+                editor.putString("status", e.getMessage());
+                editor.apply();
             }
             return recipe;
         }

@@ -5,7 +5,7 @@
     <color name="colorAccent">#669B7C</color>
     <color name="iconColorDark">#4d133c</color>
     <color name="iconColor">#dca5c1</color>
-    <color name="searchListBtn">#7f3368</color>
+    <color name="searchBtn">#7f3368</color>
     <color name="searchListDark">#ddc5d6</color>
     <color name="searchList">#efe1eb</color>
     <color name="suggestBtn">#f65a5e</color>
