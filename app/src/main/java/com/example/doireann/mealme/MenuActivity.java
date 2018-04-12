@@ -22,15 +22,13 @@ import java.net.HttpURLConnection;
 import static android.content.ContentValues.TAG;
 
 public class MenuActivity extends ToolActivity implements TriviaFetchDone {
-    private Button search_btn, suggest_btn;
+    private RadioButton radio_btn;
     private EditText search_txt;
-    RadioGroup radio_grp;
-    RadioButton radio_btn;
     private Intent iSuggest;
     private Intent iSearch;
     private Bundle bSearch;
     private Bundle bSuggest;
-    String trivia;
+    private String trivia;
     private Utility util = new Utility();
 
     @Override
@@ -38,6 +36,8 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        Button search_btn, suggest_btn;
+        RadioGroup radio_grp;
         Toolbar tbar = findViewById(R.id.id_toolbar);
         setSupportActionBar(tbar);
         getSupportActionBar().setTitle(null);
@@ -95,8 +95,14 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
 
     @Override
     public void onTriviaFetchDone(String t) {
-        bSearch.putString("trivia", t);
-        bSuggest.putString("trivia", t);
+        SharedPreferences prefs = getSharedPreferences("app_state", Context.MODE_PRIVATE);
+        String status = prefs.getString("status", "DEFAULT");
+        if (status.equals("No Exception")) {
+            bSearch.putString("trivia", t);
+            bSuggest.putString("trivia", t);
+        } else {
+            Toast.makeText(this, status, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -156,7 +162,6 @@ public class MenuActivity extends ToolActivity implements TriviaFetchDone {
 
         @Override
         protected void onPostExecute(String t) {
-//            super.onPostExecute(recipe);
             context.onTriviaFetchDone(t);
         }
     }

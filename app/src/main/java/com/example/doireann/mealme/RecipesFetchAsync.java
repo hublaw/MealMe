@@ -1,30 +1,25 @@
 package com.example.doireann.mealme;
 
+import static android.content.ContentValues.TAG;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
+
 
 /**
  * Created by Doireann on 2018-04-05.
  */
 
 public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
-    final String TAG = "MEALME";
     private Boolean search;
-    private String tags, id, title, imageUrl = null;
+    private String tags, id, imageUrl = null;
     private int counter;
     private RecipesFetchDone context;
     private Recipes recipes;
@@ -66,18 +61,16 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
             recipeArray = jsonRootObject.getJSONArray("recipes");
         }
         for(int i=0; i<recipeArray.length(); i++) {
+            String title;
             Recipe recipe = new Recipe();
             id = recipeArray.getJSONObject(i).getString("id");
             title = recipeArray.getJSONObject(i).getString("title");
             if (recipeArray.getJSONObject(i).has("image")) {
                 imageUrl = recipeArray.getJSONObject(i).getString("image");
-            } else {
-                Log.d(TAG, "NO IMAGE FOUND for " + id);
             }
             if (id != null) recipe.setId(id);
             if (title != null) recipe.setTitle(title);
             if (imageUrl != null) recipe.setImageUrl(imageUrl);
-            Log.d(TAG, imageUrl);
             recipes.recipeList.add(recipe);
         }
     }

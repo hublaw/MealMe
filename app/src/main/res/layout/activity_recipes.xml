@@ -75,7 +75,7 @@
             android:id="@+id/id_fetch_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
+            android:paddingEnd="30dp"
             android:background="@color/suggestList"
             android:text="@string/more_btn"
             android:textAlignment="textEnd"

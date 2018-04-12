@@ -14,10 +14,7 @@ import android.widget.TextView;
 public class RecipesAdapter extends ArrayAdapter {
     private Recipes recipes;
     private Context context;
-    Boolean search;
-    private int selected_row = -1; // negative means NO row selected;
-    private int position;
-
+    private Boolean search;
 
     public RecipesAdapter(Context context, Boolean search) {
         super(context, 0);
@@ -38,12 +35,10 @@ public class RecipesAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((RecipesActivity) context).getLayoutInflater();
         View row_view = inflater.inflate(R.layout.recipes_row_view, null);
-        this.position = position;
-//        if (position == selected_row) {
-//            row_view.setBackgroundColor( 0xff06FAEA);
-//        }
         TextView title_txt = row_view.findViewById(R.id.id_recipe_title);
         title_txt.setText(recipes.recipeList.get(position).getTitle());
+
+        // set background color striping
         if(position % 2 == 0) {
              if (search) title_txt.setBackgroundResource(R.color.searchListDark);
              else title_txt.setBackgroundResource(R.color.suggestListDark);
@@ -53,16 +48,6 @@ public class RecipesAdapter extends ArrayAdapter {
         }
         return row_view;
     }
-
-//    public void toggleRowSelection (int position) {
-//        // if position matches the already selected row then we unselect it.
-//        if (selected_row == position) {
-//            selected_row = -1;
-//        } else {
-//            selected_row = position;
-//        }
-//        this.notifyDataSetChanged();
-//    }
 
     public Recipe getSelectedRecipe(int i) {
         if (recipes != null) {

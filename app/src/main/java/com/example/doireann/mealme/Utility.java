@@ -16,10 +16,6 @@ import java.net.URL;
 public class Utility {
     final private String token = "xxx";
 
-    public String getToken() {
-        return token;
-    }
-
     public String inputStreamToString(InputStream is) throws IOException {
         StringBuilder response = new StringBuilder("");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -40,7 +36,7 @@ public class Utility {
         connection.setConnectTimeout(15000);
         connection.setReadTimeout(15000);
         connection.setDoInput(true);
-        connection.setRequestProperty("X-Mashape-Key", getToken());
+        connection.setRequestProperty("X-Mashape-Key", token);
         connection.setRequestProperty("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com");
         return connection;
     }

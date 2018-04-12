@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,17 +20,12 @@ import android.widget.Toast;
  */
 
 public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
-    Button fetchMore;
-    TextView triviaTxt;
-    ConstraintLayout cl;
-    RecipesAdapter adapter = null;
-    Bundle b;
-    ListView lv;
-    Boolean search;
+    private RecipesAdapter adapter = null;
+    private ConstraintLayout cl;
+    private Boolean search;
     private int counter = 0;
-    LinearLayout ll;
     private String tags;
-    ProgressBar pb;
+    private ProgressBar pb;
 
 
     private void sendFetchRecipeList(Boolean search_, String tags_, int offset) {
@@ -47,6 +41,11 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
         Toolbar tbar = findViewById(R.id.id_toolbar);
         setSupportActionBar(tbar);
         getSupportActionBar().setTitle(null);
+        Button fetchMore;
+        TextView triviaTxt;
+        Bundle b;
+        ListView lv;
+        LinearLayout ll;
 
         // fetch recipes
         Intent i = getIntent();
@@ -81,6 +80,10 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
             @Override
             public void run() {
                 cl.setVisibility(View.GONE);
+                if (adapter.getCount() == 0) {
+                    Toast.makeText(RecipesActivity.this,
+                            "No recipes found. Please check your spelling try or widen your search criteria", Toast.LENGTH_LONG).show();
+                }
             }
         }, delay);
 
@@ -88,6 +91,7 @@ public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
         lv = findViewById(R.id.id_fetch_list);
         adapter = new RecipesAdapter(this, search);
         lv.setAdapter(adapter);
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

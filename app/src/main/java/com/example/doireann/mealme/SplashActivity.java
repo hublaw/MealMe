@@ -11,12 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
-
-    private static final String TAG = "mealme";
+    private ImageView image;
+    private TextView splashText;
     private final String VERSION = BuildConfig.VERSION_NAME;
-    ImageView image;
-    TextView splashText;
-    TextView versionText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
         });
 
         // version text
-        versionText = findViewById(R.id.id_splash_version_txt);
+        TextView versionText = findViewById(R.id.id_splash_version_txt);
         versionText.setText(getResources().getString(R.string.version) + " " + VERSION);
     }
 }

@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,18 +29,18 @@ import java.net.HttpURLConnection;
 
 
 public class DetailsActivity extends ToolActivity implements DetailsFetchDone, ImageFetch.Listener {
-    String url_picture;
-    ImageView img;
-    TextView instructions;
-    ListView lv;
-    LinearLayout ll;
-    RelativeLayout rl;
-    Bundle b;
+    private String url_picture;
+    private ImageView img;
+    private TextView instructions;
+    private ListView lv;
+    private LinearLayout ll;
+    private RelativeLayout rl;
+    private Bundle b;
     private DetailsAdapter adapter;
     private String recipe_id;
     private Recipe recipe;
     private Utility util = new Utility();
-    ProgressBar pb_img, pb_ing;
+    private ProgressBar pb_img, pb_ing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,6 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
         rl = findViewById(R.id.id_details_rl);
         pb_img = findViewById(R.id.id_pb_img);
         pb_ing = findViewById(R.id.id_pb_ing);
-        Log.d( TAG, String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
         if (search) {
             pb_img.getIndeterminateDrawable().setTint(getResources().getColor(R.color.searchBtn));
             pb_ing.getIndeterminateDrawable().setTint(getResources().getColor(R.color.searchBtn));
@@ -91,7 +91,6 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
         lv.setAdapter(adapter);
     }
 
-
     @Override
     public void onImageLoaded(Bitmap bitmap) {
         img.setImageBitmap(bitmap);
@@ -100,10 +99,16 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
 
     @Override
     public void onDetailsFetchDone(Recipe recipe) {
-        adapter.setIngredients(recipe);
-        adapter.notifyDataSetChanged();
         pb_ing.setVisibility(View.GONE);
-        Log.d(TAG, recipe.getId());
+
+        SharedPreferences prefs = getSharedPreferences("app_state", Context.MODE_PRIVATE);
+        String status = prefs.getString("status", "DEFAULT");
+        if (status.equals("No Exception")) {
+            adapter.setIngredients(recipe);
+            adapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(this, status, Toast.LENGTH_LONG).show();
+        }
 
         // manipulate instructions string to add a space after list items
         String spacedInstructs = recipe.getInstructions().replaceAll("\\.<", "\\. <");
@@ -182,12 +187,6 @@ public class DetailsActivity extends ToolActivity implements DetailsFetchDone, I
                 editor.apply();
             }
             return recipe;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-
         }
 
         @Override

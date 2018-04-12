@@ -21,12 +21,4 @@ public class Recipes {
             ingredientList = new ArrayList<Recipe.Ingredient>();
         }
     }
-
-    public class Instructions {
-        List<Recipe.Ingredient> ingredientList;
-
-        public Instructions() {
-            ingredientList = new ArrayList<Recipe.Ingredient>();
-        }
-    }
 }

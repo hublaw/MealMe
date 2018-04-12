@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class ToolActivity extends AppCompatActivity {
 
@@ -30,7 +29,6 @@ public class ToolActivity extends AppCompatActivity {
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -41,7 +39,5 @@ public class ToolActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.id_toolbar);
         setSupportActionBar(myToolbar);
-
-
     }
 }

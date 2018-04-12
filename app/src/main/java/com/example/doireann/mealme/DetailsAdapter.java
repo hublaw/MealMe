@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 public class DetailsAdapter extends ArrayAdapter {
 
-    Recipe.Ingredient ingredient = null;
     private Recipes.Ingredients ingredients;
     private Context context;
     private Boolean search;
@@ -34,10 +33,6 @@ public class DetailsAdapter extends ArrayAdapter {
         }
     }
 
-    public void add(Recipe.Ingredient ingred) {
-        ingredients.ingredientList.add(ingred);
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((DetailsActivity) context).getLayoutInflater();
@@ -45,6 +40,8 @@ public class DetailsAdapter extends ArrayAdapter {
 
         TextView ingredient_txt = row_view.findViewById(R.id.id_detail_row_txt);
         ingredient_txt.setText(ingredients.ingredientList.get(position).getOriginalString());
+
+        //background color striping
         if (position % 2 == 0) {
             if (search) ingredient_txt.setBackgroundResource(R.color.searchListDark);
             else ingredient_txt.setBackgroundResource(R.color.suggestListDark);
@@ -58,8 +55,5 @@ public class DetailsAdapter extends ArrayAdapter {
         this.ingredients = r.getIngredients();
     }
 
-    public Recipes.Ingredients getIngredients(){
-        return this.ingredients;
-    }
 }
 
