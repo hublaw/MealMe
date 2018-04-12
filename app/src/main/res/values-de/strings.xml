@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">Meal Me!</string>
-    <string name="desc">A simple application to inspire you at meal times!</string>
-    <string name="display">Display</string>
+    <string name="app_name">Béile Dom!</string>
+    <string name="desc">Iarratas simplí chun tú a spreagadh ag am béile!</string>
     <string name="help">Help</string>
-    <string name="help1">This is the first paragraph</string>
-    <string name="help2">This is the second paragraph</string>
-    <string name="help3">This is the third paragraph</string>
-    <string name="menu">Menu</string>
-    <string name="search">Search</string>
-    <string name="splash">Splash</string>
-    <string name="suggest">Suggest</string>
-    <string name="breakfast">Breakfast</string>
-    <string name="lunch">Lunch</string>
-    <string name="dinner">Dinner</string>
+    <string name="search">Cuardaigh</string>
+    <string name="suggest">Le fios</string>
+    <string name="breakfast">Bricfeasta</string>
+    <string name="lunch">Lón</string>
+    <string name="dinner">Dinnéar</string>
+    <string name="dessert">Milseog</string>
+    <string name="appetizer">Tosaithe</string>
+    <string name="more_btn">níos mó</string>
+    <string name="search_hint">Cuir isteach comhábhair</string>
+    <string name="version">Leagan</string>
+
 </resources>

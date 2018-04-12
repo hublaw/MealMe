@@ -1,47 +1,68 @@
 package com.example.doireann.mealme;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 
-public class DetailsActivity extends AppCompatActivity implements DetailsFetchDone, ImageFetch.Listener {
+public class DetailsActivity extends ToolActivity implements DetailsFetchDone, ImageFetch.Listener {
     String url_picture;
     ImageView img;
     TextView instructions;
     ListView lv;
+    LinearLayout ll;
+    RelativeLayout rl;
     Bundle b;
-    String TAG = "MEALME";
     private DetailsAdapter adapter;
     private String recipe_id;
     private Recipe recipe;
+    private Utility util = new Utility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        Toolbar tbar = findViewById(R.id.id_toolbar);
+        setSupportActionBar(tbar);
+        getSupportActionBar().setTitle(null);
+
         Intent i = getIntent();
         b = i.getExtras();
+
+        // set background colour
+        Boolean search = b.getBoolean("search", false);
+        ll = findViewById(R.id.id_details_ll);
+        rl = findViewById(R.id.id_details_rl);
+        Log.d( TAG, String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE));
+        if (search) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                ll.setBackgroundColor(getResources().getColor(R.color.searchList));
+            } else {
+                rl.setBackgroundColor(getResources().getColor(R.color.searchList));
+            }
+        }
+
+        // fetch recipe image
         url_picture = (b.getString("recipe_imageUrl", ""));
         if (url_picture != "") {
             new ImageFetch(this).execute(url_picture);
@@ -50,14 +71,18 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFetchDo
         recipe_id = b.getString("recipe_id", "");
         fetcher.execute(null, null, recipe_id);
 
+        // set up layout
         TextView title_txt = findViewById(R.id.id_details_title_txt);
         title_txt.setText(b.getString("recipe_title", ""));
         img = findViewById(R.id.id_details_img);
-        instructions = findViewById(R.id.id_details_instructions_txt);
         lv = findViewById(R.id.id_details_ingredients_list);
-        adapter = new DetailsAdapter(this);
+        instructions = findViewById(R.id.id_details_instructions_txt);
+
+        // fetch recipe details
+        adapter = new DetailsAdapter(this, search);
         lv.setAdapter(adapter);
     }
+
 
     @Override
     public void onImageLoaded(Bitmap bitmap) {
@@ -67,18 +92,15 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFetchDo
     @Override
     public void onDetailsFetchDone(Recipe recipe) {
         adapter.setIngredients(recipe);
+        adapter.notifyDataSetChanged();
         Log.d(TAG, recipe.getId());
 
-        adapter.notifyDataSetChanged();
         // manipulate instructions string to add a space after list items
         String spacedInstructs = recipe.getInstructions().replaceAll("\\.<", "\\. <");
         instructions.setText(Html.fromHtml(spacedInstructs));
-        Log.d(TAG + "BEFORE", recipe.getInstructions());
-        Log.d(TAG + "AFTER", spacedInstructs);
     }
 
     private class RecipeFetch extends AsyncTask<String, String, Recipe> {
-        HttpURLConnection connection;
         private DetailsFetchDone context;
 
         public RecipeFetch(Context ctx) {
@@ -86,33 +108,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFetchDo
             context = (DetailsFetchDone) ctx;
         }
 
-        private void createConnection() throws IOException {
-            String base_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
-            URL url = new URL(base_url + b.getString("recipe_id", "") + "/information");
-            Log.d("URL: ", String.valueOf(url));
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(15000);
-            connection.setReadTimeout(15000);
-            connection.setDoInput(true);
-            connection.setRequestProperty("X-Mashape-Key", "xxx");
-            connection.setRequestProperty("X-Mashape-Host", "xxx");
-        }
-
-        private String inputStreamToString(InputStream is) throws IOException{
-            StringBuilder response = new StringBuilder("");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-            }
-            br.close();
-            return response.toString();
-        }
-
-        private void parseRecipeIS(InputStream recipeIS) throws JSONException, IOException{
-            String recipeJsonString = inputStreamToString(recipeIS);
+        private void parseRecipeIS(InputStream recipeIS) throws JSONException, IOException {
+            String recipeJsonString = util.inputStreamToString(recipeIS);
             JSONObject jsonRootObject = new JSONObject(recipeJsonString);
             recipe = new Recipe();
             recipe.setTitle(jsonRootObject.getString("title"));
@@ -139,18 +136,20 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFetchDo
         @Override
         protected Recipe doInBackground(String... strings) {
             try {
-                createConnection();
+                String base_url = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+                String id = (b.getString("recipe_id"));
+                HttpURLConnection conn = util.createConnection(String.format("%s%s/information", base_url, id));
                 InputStream dataInputStream = null;
-                int responseCode = connection.getResponseCode();
+                int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    dataInputStream = connection.getInputStream();
+                    dataInputStream = conn.getInputStream();
                 } else {
                     if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
                         throw new Exception("Forbidden: " + String.valueOf(responseCode));
                     }
                 }
                 parseRecipeIS(dataInputStream);
-            }  catch (IOException ioe) {
+            } catch (IOException ioe) {
                 Log.e(TAG, "Exception establishing connection", ioe);
             } catch (JSONException je) {
                 Log.e(TAG, "Exception parsing recipe details", je);
@@ -161,8 +160,13 @@ public class DetailsActivity extends AppCompatActivity implements DetailsFetchDo
         }
 
         @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        @Override
         protected void onPostExecute(Recipe r) {
-//            super.onPostExecute(recipe);
             context.onDetailsFetchDone(r);
         }
     }

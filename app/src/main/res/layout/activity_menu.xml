@@ -7,94 +7,130 @@
     android:orientation="vertical"
     tools:context="com.example.doireann.mealme.MenuActivity"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    android:background="@color/list2">
+    android:focusableInTouchMode="true">
 
-    <TextView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/menu" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <LinearLayout
-        android:id="@+id/id_suggest_ll"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/id_suggest_cl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="vertical">
+        android:layout_margin="@dimen/app_margin"
+        android:layout_weight="1"
+        android:background="@color/suggestListDark">
 
         <RadioGroup
             android:id="@+id/id_suggest_radio_grp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="168dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.625"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <RadioButton
                 android:id="@+id/id_breakfast_rd"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="Breakfast" />
+                android:hint="breakfast"
+                android:text="@string/breakfast" />
 
             <RadioButton
                 android:id="@+id/id_lunch_rd"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:hint="lunch"
 
-                android:text="Lunch" />
+                android:text="@string/lunch" />
 
             <RadioButton
                 android:id="@+id/id_dinner_rd"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:hint="dinner"
+                android:text="@string/dinner" />
 
-                android:text="Dinner" />
+            <RadioButton
+                android:id="@+id/id_dessert_rd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="dessert"
+                android:text="@string/dessert" />
+
+            <RadioButton
+                android:id="@+id/id_appetizer_rd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="appetizer"
+                android:text="@string/appetizer" />
         </RadioGroup>
 
         <Button
             android:id="@+id/id_suggest_menu_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/suggest" />
+            android:background="@color/suggestBtn"
+            android:text="@string/suggest"
+            android:textColor="@color/suggestListDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.843" />
+    </android.support.constraint.ConstraintLayout>
 
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/id_search_ll"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/id_search_cl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:background="@color/searchListDark"
+        android:layout_margin="@dimen/app_margin">
 
         <EditText
             android:id="@+id/id_search_ingred_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="@string/search_hint"
             android:inputType="textPersonName"
-            android:hint="Enter one or more ingredients"
-            android:text="">
-        </EditText>
-
-
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text=""
+            app:layout_constraintBottom_toTopOf="@+id/id_search_menu_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
         <Button
-        android:id="@+id/id_search_menu_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search" />
+            android:id="@+id/id_search_menu_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            android:textColor="@color/searchListDark"
+            android:background="@color/searchListBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.671" />
 
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/id_help_menu_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/help" />
+    </android.support.constraint.ConstraintLayout>
+
 
 </LinearLayout>
+
+ <!--#8ad8a9, #ce8cba-->

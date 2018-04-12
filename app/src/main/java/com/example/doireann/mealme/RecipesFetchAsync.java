@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -28,6 +29,7 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
     private RecipesFetchDone context;
     private HttpURLConnection connection;
     private Recipes recipes;
+    private Utility util = new Utility();
 
 
     public RecipesFetchAsync(Context ctx, Boolean search, String tags, int counter) {
@@ -53,32 +55,8 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
         return base_url + options + tags;
     }
 
-    private void createConnection() throws IOException{
-        URL url = new URL(createUrlString(search, tags));
-        Log.d("URL: ", String.valueOf(url)); //malformed url
-
-        connection = (HttpURLConnection) url.openConnection(); //ioexception
-        connection.setRequestMethod("GET"); //protocol exception
-        connection.setConnectTimeout(15000);
-        connection.setReadTimeout(15000);
-        connection.setDoInput(true);
-        connection.setRequestProperty("X-Mashape-Key", "xxx");
-        connection.setRequestProperty("X-Mashape-Host", "xxx");
-    }
-
-    private String inputStreamToString(InputStream is) throws IOException {
-        StringBuilder response = new StringBuilder("");
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            response.append(line);
-        }
-        br.close();
-        return response.toString();
-    }
-
     private void parseRecipeListIS (InputStream recipeListIS) throws JSONException, IOException {
-        String recipeListJsonString = inputStreamToString(recipeListIS);
+        String recipeListJsonString = util.inputStreamToString(recipeListIS);
         recipes = new Recipes();
         JSONArray recipeArray;
 
@@ -108,11 +86,12 @@ public class RecipesFetchAsync extends AsyncTask <String, String, Recipes>{
     @Override
     protected Recipes doInBackground(String... strings) {
         try {
-            createConnection();
+            String urlString = createUrlString(search, tags);
+            HttpURLConnection conn = util.createConnection(urlString);
             InputStream dataInputStream = null;
-            int responseCode = connection.getResponseCode();
+            int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                dataInputStream = connection.getInputStream();
+                dataInputStream = conn.getInputStream();
             } else {
                 if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
                     throw new Exception("Forbidden: " + String.valueOf(responseCode));

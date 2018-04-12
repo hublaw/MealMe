@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/suggestList"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context="com.example.doireann.mealme.MenuActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:background="@color/suggestList"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        tools:context="com.example.doireann.mealme.MenuActivity">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/id_suggest_cl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/app_margin"
+            android:layout_weight="1"
+            android:background="@color/suggestListDark">
+
+            <RadioGroup
+                android:id="@+id/id_suggest_radio_grp"
+                android:layout_width="162dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.625"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <RadioButton
+                    android:id="@+id/id_breakfast_rd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="breakfast"
+                    android:text="@string/breakfast" />
+
+                <RadioButton
+                    android:id="@+id/id_lunch_rd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="lunch"
+
+                    android:text="@string/lunch" />
+
+                <RadioButton
+                    android:id="@+id/id_dinner_rd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="dinner"
+                    android:text="@string/dinner" />
+
+                <RadioButton
+                    android:id="@+id/id_dessert_rd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="dessert"
+                    android:text="@string/dessert" />
+
+                <RadioButton
+                    android:id="@+id/id_appetizer_rd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="appetizer"
+                    android:text="@string/appetizer" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/id_suggest_menu_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/suggestBtn"
+                android:text="@string/suggest"
+                android:textColor="@color/suggestListDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.46"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.738" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/id_search_cl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/app_margin"
+            android:layout_weight="1"
+            android:background="@color/searchListDark">
+
+            <EditText
+                android:id="@+id/id_search_ingred_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:ems="10"
+                android:hint="@string/search_hint"
+                android:inputType="textPersonName"
+                android:text=""
+                app:layout_constraintBottom_toTopOf="@+id/id_search_menu_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.586" />
+
+            <Button
+                android:id="@+id/id_search_menu_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/searchListBtn"
+                android:text="@string/search"
+                android:textColor="@color/searchListDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.741" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
+
+    <!--#8ad8a9, #ce8cba-->

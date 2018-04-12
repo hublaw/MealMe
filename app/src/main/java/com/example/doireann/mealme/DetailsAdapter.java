@@ -16,11 +16,13 @@ public class DetailsAdapter extends ArrayAdapter {
     Recipe.Ingredient ingredient = null;
     private Recipes.Ingredients ingredients;
     private Context context;
+    private Boolean search;
 
 
-    public DetailsAdapter(Context context) {
+    public DetailsAdapter(Context context, Boolean search) {
         super(context, 0);
         this.context = context;
+        this.search = search;
     }
 
     @Override
@@ -44,10 +46,11 @@ public class DetailsAdapter extends ArrayAdapter {
         TextView ingredient_txt = row_view.findViewById(R.id.id_detail_row_txt);
         ingredient_txt.setText(ingredients.ingredientList.get(position).getOriginalString());
         if (position % 2 == 0) {
-            ingredient_txt.setBackgroundResource(R.color.list1);
+            if (search) ingredient_txt.setBackgroundResource(R.color.searchListDark);
+            else ingredient_txt.setBackgroundResource(R.color.suggestListDark);
         } else {
-            ingredient_txt.setBackgroundResource(R.color.list2);
-        }
+            if (search) ingredient_txt.setBackgroundResource(R.color.searchList);
+            else ingredient_txt.setBackgroundResource(R.color.suggestList);        }
         return row_view;
     }
 

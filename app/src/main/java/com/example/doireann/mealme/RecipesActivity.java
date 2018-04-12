@@ -2,10 +2,13 @@ package com.example.doireann.mealme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,16 +17,21 @@ import android.widget.Toast;
  * Created by Doireann on 2018-04-06.
  */
 
-public class RecipesActivity extends AppCompatActivity implements RecipesFetchDone {
+public class RecipesActivity extends ToolActivity implements RecipesFetchDone {
     Button fetchMore;
     TextView triviaTxt;
+    ConstraintLayout cl;
     RecipesAdapter adapter = null;
     Bundle b;
     ListView lv;
-    int counter = 0;
+    Boolean search;
+    private int counter = 0;
+    LinearLayout ll;
+    private String tags;
 
-    private void sendFetchRecipeList(Boolean search, String tags, int offset) {
-        final RecipesFetchAsync recipesFetchAsync = new RecipesFetchAsync(this, search, tags, counter);
+
+    private void sendFetchRecipeList(Boolean search_, String tags_, int offset) {
+        final RecipesFetchAsync recipesFetchAsync = new RecipesFetchAsync(this, search_, tags_, counter);
         recipesFetchAsync.execute();
     }
 
@@ -32,23 +40,48 @@ public class RecipesActivity extends AppCompatActivity implements RecipesFetchDo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
 
+        Toolbar tbar = findViewById(R.id.id_toolbar);
+        setSupportActionBar(tbar);
+        getSupportActionBar().setTitle(null);
 
+        // fetch recipes
         Intent i = getIntent();
         b = i.getExtras();
-        sendFetchRecipeList(b.getBoolean("search", false), b.getString("tag", ""), counter);
+        search = b.getBoolean("search", false);
+        tags = b.getString("tag", "");
+        sendFetchRecipeList(search, tags, counter);
 
+        // set background colours
+        ll = findViewById(R.id.id_recipe_ll);
+        fetchMore = findViewById(R.id.id_fetch_btn);
         triviaTxt = findViewById(R.id.id_trivia_txt);
-        triviaTxt.setText(b.getString("trivia"));
-        triviaTxt.postDelayed(new Runnable() {
+        if (search) {
+            ll.setBackgroundColor(getResources().getColor(R.color.searchList));
+            fetchMore.setBackgroundColor(getResources().getColor(R.color.searchList));
+            fetchMore.setTextColor(getResources().getColor(R.color.searchListBtn));
+            triviaTxt.setBackgroundColor(getResources().getColor(R.color.searchListDark));
+        }
+
+        // set up trivia layout
+        String triviaStr = b.getString("trivia");
+        triviaTxt.setText("Did you know?\n" + triviaStr);
+
+        // set trivia visibility
+        int delay = 3000;
+        if (triviaStr != null) {
+            delay = calcDelay(triviaStr.length());
+        }
+        cl = findViewById(R.id.id_trivia_layout);
+        cl.postDelayed(new Runnable() {
             @Override
             public void run() {
-                triviaTxt.setVisibility(View.GONE);
+                cl.setVisibility(View.GONE);
             }
-        }, 4000);
+        }, delay);
 
-
+        //set up recipes layout
         lv = findViewById(R.id.id_fetch_list);
-        adapter = new RecipesAdapter(this);
+        adapter = new RecipesAdapter(this, search);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -58,43 +91,52 @@ public class RecipesActivity extends AppCompatActivity implements RecipesFetchDo
                 bDetails.putString("recipe_id", selectedRecipe.getId());
                 bDetails.putString("recipe_title", selectedRecipe.getTitle());
                 bDetails.putString("recipe_imageUrl", selectedRecipe.getImageUrl());
+                bDetails.putBoolean("search", search);
                 Intent iDetails = new Intent(RecipesActivity.this, DetailsActivity.class);
                 iDetails.putExtras(bDetails);
                 startActivity(iDetails);
             }
         });
 
-        fetchMore = findViewById(R.id.id_fetch_btn);
+        // fetch more button listener
         fetchMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 counter++;
-                sendFetchRecipeList(b.getBoolean("search", false),
-                        b.getString("tag", ""), counter);
-//                Toast.makeText(RecipesActivity.this, String.valueOf(counter), Toast.LENGTH_SHORT).show();
+                sendFetchRecipeList(search, tags, counter);
             }
         });
+    }
+
+    private int calcDelay(int triviaLength) {
+        int delay;
+        switch (triviaLength / 50) {
+            case 0:
+            case 1:
+                delay = 3000;
+                break;
+            case 2:
+            case 3:
+                delay = 4500;
+                break;
+            case 4:
+            case 5:
+                delay = 6000;
+                break;
+            default:
+                delay = 8000;
+                break;
+        }
+        return delay;
     }
 
     @Override
     public void onRecipeFetchDone(Recipes recipe_list) {
         adapter.setRecipes(recipe_list);
         adapter.notifyDataSetChanged();
-        }
     }
+}
 
-
-//not used but will need
-//imports
-//import android.widget.TextView;
-//
-//instance variables
-//    private TextView instructionsTxtView, titleTxtView;
-//
-//onCreate
-//        titleTxtView = findViewById(R.id.id_title_txt);
-//        instructionsTxtView = findViewById(R.id.id_instructions_txt);
-//
 // How to access errors from RecipesFetchAsync?
 //    @Override
 //    public void onGetCompletion() {

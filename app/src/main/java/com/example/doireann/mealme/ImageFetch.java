@@ -13,6 +13,8 @@ import java.net.URL;
  */
 
 public class ImageFetch extends AsyncTask<String, Void, Bitmap> {
+    private Listener listener;
+
 
     public ImageFetch(Listener listener) {
         this.listener = listener;
@@ -22,7 +24,6 @@ public class ImageFetch extends AsyncTask<String, Void, Bitmap> {
         void onImageLoaded(Bitmap bitmap);
     }
 
-    private Listener listener;
 
 
     @Override

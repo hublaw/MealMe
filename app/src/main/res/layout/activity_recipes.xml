@@ -1,32 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_recipe_ll"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/list2">
+    android:background="@color/suggestList"
+    android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <TextView
-        android:id="@+id/id_trivia_txt"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/id_trivia_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text=""
-        android:textSize="18dp"/>
+        android:layout_marginEnd="@dimen/app_margin"
+        android:layout_marginStart="@dimen/app_margin">
+
+        <TextView
+            android:id="@+id/id_trivia_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/suggestListDark"
+            android:padding="15dp"
+            android:text=""
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18dp"
+            android:textStyle="italic|bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.322" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <ListView
         android:id="@+id/id_fetch_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/app_margin"
+        android:layout_marginStart="@dimen/app_margin"
+        android:layout_marginTop="10dp"
         android:layout_weight="8"
-        android:divider="@color/list1"
-        >
+        android:divider="@color/suggestListDark">
 
     </ListView>
-    <Button
-        android:id="@+id/id_fetch_btn"
-        android:layout_width="wrap_content"
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/more_btn" />
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/id_fetch_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_btn"
+            android:textAlignment="textEnd"
+            android:textSize="18dp"
+            android:layout_marginEnd="30dp"
+            android:background="@color/suggestList"
+            android:textColor="@color/suggestBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.322"
+            tools:layout_editor_absoluteY="511dp" />
+    </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

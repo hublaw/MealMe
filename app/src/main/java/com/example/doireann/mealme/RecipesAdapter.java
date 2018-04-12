@@ -12,16 +12,17 @@ import android.widget.TextView;
  */
 
 public class RecipesAdapter extends ArrayAdapter {
-    Recipe recipe = null;
     private Recipes recipes;
     private Context context;
+    Boolean search;
     private int selected_row = -1; // negative means NO row selected;
     private int position;
 
 
-    public RecipesAdapter(Context context) {
+    public RecipesAdapter(Context context, Boolean search) {
         super(context, 0);
         this.context = context;
+        this.search = search;
     }
 
     @Override
@@ -44,9 +45,11 @@ public class RecipesAdapter extends ArrayAdapter {
         TextView title_txt = row_view.findViewById(R.id.id_recipe_title);
         title_txt.setText(recipes.recipeList.get(position).getTitle());
         if(position % 2 == 0) {
-            title_txt.setBackgroundResource(R.color.list1);
+             if (search) title_txt.setBackgroundResource(R.color.searchListDark);
+             else title_txt.setBackgroundResource(R.color.suggestListDark);
         } else {
-            title_txt.setBackgroundResource(R.color.list2);
+            if (search) title_txt.setBackgroundResource(R.color.searchList);
+            else title_txt.setBackgroundResource(R.color.suggestList);
         }
         return row_view;
     }
@@ -68,7 +71,7 @@ public class RecipesAdapter extends ArrayAdapter {
         return null;
     }
 
-    void setRecipes( Recipes r) {
+    public void setRecipes( Recipes r) {
         recipes = r;
     }
 }

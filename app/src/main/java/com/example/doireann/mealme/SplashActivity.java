@@ -1,6 +1,7 @@
 package com.example.doireann.mealme;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,12 +25,19 @@ public class SplashActivity extends AppCompatActivity {
 
         //text animation
         splashText = findViewById(R.id.id_splash_txt);
-        Animation textAnim = AnimationUtils.loadAnimation(this, R.anim.splash_txt_anim);
-        splashText.startAnimation(textAnim);
+        Animation textAnim;
+        Animation imageAnim;
 
         // image animation
         image = findViewById(R.id.id_splash_img);
-        Animation imageAnim = AnimationUtils.loadAnimation(this, R.anim.splash_img_anim);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            textAnim = AnimationUtils.loadAnimation(this, R.anim.splash_txt_animp);
+            imageAnim = AnimationUtils.loadAnimation(this, R.anim.splash_img_animp);
+        } else {
+            textAnim = AnimationUtils.loadAnimation(this, R.anim.splash_txt_animl);
+            imageAnim = AnimationUtils.loadAnimation(this, R.anim.splash_img_animl);
+        }
+        splashText.startAnimation(textAnim);
         image.startAnimation(imageAnim);
         imageAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -51,6 +59,6 @@ public class SplashActivity extends AppCompatActivity {
 
         // version text
         versionText = findViewById(R.id.id_splash_version_txt);
-        versionText.setText("Version " + VERSION);
+        versionText.setText(getResources().getString(R.string.version) + " " + VERSION);
     }
 }

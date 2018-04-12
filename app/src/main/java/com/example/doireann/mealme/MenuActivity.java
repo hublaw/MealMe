@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,22 +12,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
-
-public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
-    private Button search_btn, suggest_btn, help_btn;
+public class MenuActivity extends ToolActivity implements TriviaFetchDone {
+    private Button search_btn, suggest_btn;
     private EditText search_txt;
     RadioGroup radio_grp;
     RadioButton radio_btn;
@@ -36,32 +30,26 @@ public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
     private Bundle bSearch;
     private Bundle bSuggest;
     String trivia;
+    private Utility util = new Utility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Toolbar tbar = findViewById(R.id.id_toolbar);
+        setSupportActionBar(tbar);
+        getSupportActionBar().setTitle(null);
+
         bSuggest = new Bundle();
         bSearch = new Bundle();
 
         new TriviaFetch(MenuActivity.this).execute();
         search_btn = findViewById(R.id.id_search_menu_btn);
         suggest_btn = findViewById(R.id.id_suggest_menu_btn);
-        help_btn = findViewById(R.id.id_help_menu_btn);
         radio_grp = findViewById(R.id.id_suggest_radio_grp);
         search_txt = findViewById(R.id.id_search_ingred_txt);
-//        search_txt.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//            }
-//        });
-
+        search_txt.setShowSoftInputOnFocus(false);
 
         radio_grp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -69,7 +57,7 @@ public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 //                new TriviaFetch(MenuActivity.this).execute();
                 radio_btn = findViewById(checkedId);
-                bSuggest.putString("tag", radio_btn.getText().toString().toLowerCase());
+                bSuggest.putString("tag", radio_btn.getHint().toString().toLowerCase());
             }
         });
 
@@ -111,7 +99,6 @@ public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
     }
 
     private class TriviaFetch extends AsyncTask<String, String, String> {
-        HttpURLConnection connection;
         private TriviaFetchDone context;
 
         public TriviaFetch(Context ctx) {
@@ -119,30 +106,8 @@ public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
             context = (TriviaFetchDone) ctx;
         }
 
-        private void createConnection() throws IOException {
-            URL url = new URL("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/trivia/random");
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(15000);
-            connection.setReadTimeout(15000);
-            connection.setDoInput(true);
-            connection.setRequestProperty("X-Mashape-Key", "xxx");
-            connection.setRequestProperty("X-Mashape-Host", "xxx");
-        }
-
-        private String inputStreamToString(InputStream is) throws IOException {
-            StringBuilder response = new StringBuilder("");
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-            }
-            br.close();
-            return response.toString();
-        }
-
         private void parseRecipeIS(InputStream recipeIS) throws JSONException, IOException {
-            String recipeJsonString = inputStreamToString(recipeIS);
+            String recipeJsonString = util.inputStreamToString(recipeIS);
             JSONObject jsonRootObject = new JSONObject(recipeJsonString);
             trivia = jsonRootObject.getString("text");
         }
@@ -150,11 +115,12 @@ public class MenuActivity extends AppCompatActivity implements TriviaFetchDone {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                createConnection();
+                String triviaUrl = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/trivia/random";
+                HttpURLConnection conn = util.createConnection(triviaUrl);
                 InputStream dataInputStream = null;
-                int responseCode = connection.getResponseCode();
+                int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    dataInputStream = connection.getInputStream();
+                    dataInputStream = conn.getInputStream();
                 } else {
                     if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
                         throw new Exception("Forbidden: " + String.valueOf(responseCode));

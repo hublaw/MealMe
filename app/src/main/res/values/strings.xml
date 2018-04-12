@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Meal Me!</string>
     <string name="desc">A simple application to inspire you at meal times!</string>
-    <string name="menu">Menu</string>
+    <string name="help">Help</string>
+    <string name="helpSuggest">This is the suggest help</string>
+    <string name="helpSearch">This is the search help</string>
     <string name="search">Search</string>
-    <string name="splash">Splash</string>
     <string name="suggest">Suggest</string>
     <string name="breakfast">Breakfast</string>
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
-    <string name="more_btn">See more</string>
+    <string name="dessert">Dessert</string>
+    <string name="appetizer">Appetizer</string>
+    <string name="more_btn">Show me more!</string>
+    <string name="search_hint">Enter one or more ingredients</string>
+    <string name="version">Version</string>
 </resources>

@@ -21,7 +21,7 @@
             android:duration="2400" />
 
         <translate
-            android:toYDelta="50%"
+            android:toXDelta="250%"
             android:duration="2000"/>
 
 

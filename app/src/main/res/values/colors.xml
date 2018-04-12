@@ -2,14 +2,15 @@
 <resources>
     <color name="colorPrimaryDark">#557669</color>
     <color name="colorPrimary">#669B7C</color>
-    <color name="colorAccent">#f65a5e</color>
+    <color name="colorAccent">#669B7C</color>
     <color name="iconColorDark">#4d133c</color>
     <color name="iconColor">#dca5c1</color>
-    <color name="splashbg">#e0d0db</color>
-    <color name="list1">#F2D1A8</color>
-    <color name="list2">#EBEBEB</color>
-    <color name="list3">#a7dff2</color>
-    <color name="list4">#95d1e5</color>
+    <color name="searchListBtn">#7f3368</color>
+    <color name="searchListDark">#ddc5d6</color>
+    <color name="searchList">#efe1eb</color>
+    <color name="suggestBtn">#f65a5e</color>
+    <color name="suggestListDark">#F2D1A8</color>
+    <color name="suggestList">#f7e7d4</color>
+
+
 </resources>
-
-
